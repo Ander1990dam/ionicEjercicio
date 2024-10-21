@@ -1,0 +1,86 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Listado de Cursos</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding" *ngIf="rol === 'alumno'">
+  <ion-list *ngIf="matriculas && matriculas.length > 0">
+    <ion-item *ngFor="let matricula of matriculas">
+      <ion-label (click)="mostrarNota(matricula.curso.id)" class="cursor-pointer">
+        <h2>{{ matricula.curso.nombre }}</h2>
+      </ion-label>
+      <ion-label *ngIf="matricula.mostrarNota">
+        <h2 *ngIf="matricula.nota">Nota: {{ matricula.nota }}</h2>
+        <h2 *ngIf="!matricula.nota">Nota: Asignatura sin evaluar</h2>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <ion-card *ngIf="matriculas && matriculas.length === 0">
+    <ion-card-header>
+      <ion-card-title>No hay cursos disponibles</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      Actualmente no hay cursos para mostrar.
+    </ion-card-content>
+  </ion-card>
+</ion-content>
+<ion-content class="ion-padding" *ngIf="!rol">
+  <ion-list *ngIf="cursos && cursos.length > 0">
+    <ion-item *ngFor="let curso of cursos">
+      <ion-label (click)="mostrarNota(curso.id)">
+        <h2>{{ curso.nombre }}</h2>
+      </ion-label>
+      
+    </ion-item>
+  </ion-list>
+
+  <ion-card *ngIf="matriculas && matriculas.length === 0">
+    <ion-card-header>
+      <ion-card-title>No hay cursos disponibles</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      Actualmente no hay cursos para mostrar.
+    </ion-card-content>
+  </ion-card>
+</ion-content>
+<ion-content class="ion-padding" *ngIf="rol === 'administrador'">
+  <ion-list *ngIf="cursosAlumn && cursosAlumn.length > 0">
+    <ion-item *ngFor="let curso of cursosAlumn">
+      <ion-label (click)="mostrarAlumnos(curso.curso.id)" class="cursor-pointer">
+        <h2>{{ curso.curso.nombre }}</h2>
+      </ion-label>
+      <ion-list *ngIf="curso.mostrarAlumnos && curso.alumnos.length > 0">
+        <ion-label>
+          <h2>Listado de alumnos:</h2>
+          <br>
+        </ion-label>
+        <ion-label *ngFor="let alumno of curso.alumnos">
+          <h3>
+            <span class="nombre">{{ alumno.nombre }}</span>
+            <span class="apellido">{{ alumno.apellido1 }}</span>
+          </h3>
+          <br>
+        </ion-label>
+        
+        
+      </ion-list>
+      <ion-label *ngIf="curso.mostrarAlumnos && curso.alumnos.length === 0">
+        No hay alumnos matriculados
+      </ion-label>
+      <!-- <ion-label *ngIf="cu.mostrarNota">
+        <h2 *ngIf="matricula.nota">Nota: {{ matricula.nota }}</h2>
+        <h2 *ngIf="!matricula.nota">Nota: Asignatura sin evaluar</h2>
+      </ion-label> -->
+    </ion-item>
+  </ion-list>
+
+  <ion-card *ngIf="matriculas && matriculas.length === 0">
+    <ion-card-header>
+      <ion-card-title>No hay cursos disponibles</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      Actualmente no hay cursos para mostrar.
+    </ion-card-content>
+  </ion-card>
+</ion-content>

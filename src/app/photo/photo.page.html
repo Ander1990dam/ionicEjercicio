@@ -1,0 +1,14 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Añadir foto</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content style="text-align: -webkit-center;">
+  <ion-img *ngIf="photo" [src]="photo" style="max-width: 350px; "></ion-img>
+  <ion-fab vertical="bottom" horizontal="center" slot="fixed">
+    <ion-fab-button (click)="addPhotoToGallery()">
+      <ion-icon name="camera"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>
