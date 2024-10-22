@@ -5,13 +5,13 @@ import { AuthGuard } from './guards/auth.guard';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'login', // Redirige al login si no hay ninguna ruta especificada
+    redirectTo: 'login',
     pathMatch: 'full'
   },
   {
     path: 'login',
     loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule),
-    canActivate: [AuthGuard] // Aplica el guard a la página de login
+    canActivate: [AuthGuard]
   },
   {
     path: 'alta',
@@ -24,6 +24,22 @@ const routes: Routes = [
   {
     path: 'photo',
     loadChildren: () => import('./photo/photo.module').then( m => m.PhotoPageModule),
+  },
+  {
+    path: 'photo',
+    loadChildren: () => import('./photo/photo.module').then( m => m.PhotoPageModule)
+  },
+  {
+    path: 'panel-admin',
+    loadChildren: () => import('./panel-admin/panel-admin.module').then( m => m.PanelAdminPageModule)
+  },
+  {
+    path: 'galeria',
+    loadChildren: () => import('./galeria/galeria.module').then( m => m.GaleriaPageModule)
+  },
+  {
+    path: 'panel-admin-cursos',
+    loadChildren: () => import('./panel-admin-cursos/panel-admin-cursos.module').then( m => m.PanelAdminCursosPageModule)
   },
  
 ];

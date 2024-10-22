@@ -1,40 +1,35 @@
 <ion-app>
-  <ion-split-pane contentId="main-content">
+  <ion-split-pane *ngIf="apiService.isLogin" contentId="main-content">
     <ion-menu contentId="main-content" type="overlay">
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Menú</ion-title>
+        </ion-toolbar>
+      </ion-header>
       <ion-content>
         <ion-list id="inbox-list">
-          <ion-list-header>{{ apiService.usuario }}</ion-list-header>
+          <ion-list-header>{{ usuario }}</ion-list-header>
           <ion-img *ngIf="fotoPerfilUrl !== ''" [src]="fotoPerfilUrl" style="max-width: 150px;"></ion-img>
-          <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index" >
-              <ion-item routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false" routerLinkActive="selected">
-                <ion-icon aria-hidden="true" slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
-                <ion-label>{{ p.title }}</ion-label>
-              </ion-item>
-          </ion-menu-toggle>
-          <ion-menu-toggle auto-hide="false" *ngIf="!apiService.isLogin">
-            <ion-item routerDirection="root" [routerLink]="['/login']" lines="none" detail="false" routerLinkActive="selected">
-              <ion-icon aria-hidden="true" slot="start" [ios]="'person-circle' + '-outline'" [md]="'person-circle' + '-sharp'"></ion-icon>
-              <ion-label>Login</ion-label>
-            </ion-item>
-        </ion-menu-toggle>
-          <ion-menu-toggle auto-hide="false" *ngIf="apiService.isLogin" >
-            <ion-item  routerDirection="root" [routerLink]="['/photo']"  lines="none" detail="false">
-              <ion-icon aria-hidden="true" slot="start" [ios]="'camera' + '-outline'" [md]="'camera' + '-sharp'"></ion-icon>
-              <ion-label>Foto
-              </ion-label>
+          
+          <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages">
+            <ion-item routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false">
+              <ion-icon aria-hidden="true" slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
+              <ion-label>{{ p.title }}</ion-label>
             </ion-item>
           </ion-menu-toggle>
-          <ion-menu-toggle auto-hide="false" *ngIf="apiService.isLogin" (click)="logout()">
-            <ion-item  routerDirection="root" [routerLink]="['/login']"  lines="none" detail="false">
-              <ion-icon aria-hidden="true" slot="start" [ios]="'person-circle' + '-outline'" [md]="'person-circle' + '-sharp'"></ion-icon>
-              <ion-label>Cerrar sesion
-              </ion-label>
+
+          <ion-menu-toggle auto-hide="false" *ngIf="apiService.isLogin">
+            <ion-item routerDirection="root" (click)="logout()" lines="none" detail="false">
+              <ion-icon aria-hidden="true" slot="start" [ios]="'log-out-outline'" [md]="'log-out-sharp'"></ion-icon>
+              <ion-label>Cerrar sesión</ion-label>
             </ion-item>
-        </ion-menu-toggle>
+          </ion-menu-toggle>
         </ion-list>
-       
       </ion-content>
     </ion-menu>
+
     <ion-router-outlet id="main-content"></ion-router-outlet>
   </ion-split-pane>
+
+  <ion-router-outlet id="main-content" *ngIf="!apiService.isLogin"></ion-router-outlet>
 </ion-app>

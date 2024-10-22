@@ -12,13 +12,16 @@ export class ApiService {
   public usuario = '';
   private url = "https://api2.ruptur.eu/ws/";
 
-  // BehaviorSubject para fotoPerfil, con un valor inicial de cadena vacía
   private fotoPerfilSubject: BehaviorSubject<string> = new BehaviorSubject<string>('');
 
-  // Observable que los componentes pueden suscribirse
   public fotoPerfil$: Observable<string> = this.fotoPerfilSubject.asObservable();
 
   constructor(private httpClient: HttpClient) {}
+
+
+  getApiUrl(){
+    return this.url;
+  }
 
   getCursos(): Observable<Curso[]> {
     return this.httpClient.get<Curso[]>(this.url + "curso");
@@ -56,13 +59,58 @@ export class ApiService {
     return this.httpClient.post<any>(this.url + 'usuario/foto/' + formData.get('userId'), formData);
   }
 
-  getFotoPerfil(userId: string): Observable<any> {
+  getFotoPerfil(userId: number): Observable<any> {
     return this.httpClient.get<any>(this.url + 'usuario/foto/' + userId);
   }
 
-  // Método para actualizar la foto de perfil
-  actualizarFotoPerfil(nuevaFoto: string): void {
-    // Emitir el nuevo valor
-    this.fotoPerfilSubject.next(nuevaFoto);
+  getInfoPerfil(userId: number): Observable<any> {
+    return this.httpClient.get<any>(this.url + "usuario/" + userId)
   }
+
+  actualizarFotoPerfil(idUser:number, fotoPerfil: string, agregarAGaleria: boolean = true) {
+    const body = { fotoPerfil, agregarAGaleria };
+    return this.httpClient.put(`${this.url}usuario/${idUser}/foto`, body);
+  }
+  crearUsuario(usuario: string, nombre: string, apellido1: string, apellido2: string, clave: string, rol: string) {
+    const body = { usuario, nombre, apellido1, apellido2, clave, rol };
+    return this.httpClient.post(`${this.url}register`, body);
+  }
+  
+  editarUsuario(idUser: number, usuario: string, nombre: string, apellido1: string, apellido2: string, clave: string, rol: string): Observable<any> {
+    const body = { usuario, nombre, apellido1, apellido2, clave, rol };
+    return this.httpClient.put(`${this.url}usuario/${idUser}`, body);
+  }  
+
+  eliminarUsuario(idUser: number){
+    return this.httpClient.delete(`${this.url}usuario/${idUser}`)
+  }
+  obtenerUsuarios(){
+    return this.httpClient.get(`${this.url}usuario`)
+  }
+
+  obtenerGaleria(idUser: number){
+    return this.httpClient.get(`${this.url}galeria/${idUser}`)
+  }
+
+
+
+  crearCurso(nombre: string) {
+    const body = { nombre };
+    return this.httpClient.post(`${this.url}curso`, body);
+  }
+
+  editarCurso(idCurso: number, nombre: string): Observable<any> {
+    const body = { nombre };
+    return this.httpClient.put(`${this.url}curso/${idCurso}`, body);
+  }
+
+  eliminarCurso(idCurso: number) {
+    return this.httpClient.delete(`${this.url}curso/${idCurso}`);
+  }
+  
+  obtenerCursos() {
+    return this.httpClient.get(`${this.url}cursos`);
+  }
+  
+
 }

@@ -51,7 +51,6 @@ export class AltaPage implements OnInit {
     if (this.formulario.valid) {
       const {alumno, curso} = this.formulario.value;
 
-      // Aquí puedes manejar lo que sucederá cuando se confirme la selección
       this.apiService.postMatricula({id_alumno:alumno , id_curso: curso}).subscribe({
         next: (resp) => {
           console.log('Curso añadido correctamente');
@@ -59,7 +58,7 @@ export class AltaPage implements OnInit {
 
         },
         error: (error) => {
-          console.error(error); // Maneja el error aquí
+          console.error(error);
         }
       })
     } else {
@@ -74,7 +73,7 @@ export class AltaPage implements OnInit {
 
       },
       error: (error) => {
-        console.error(error); // Maneja el error aquí
+        console.error(error);
       }
     })
   }

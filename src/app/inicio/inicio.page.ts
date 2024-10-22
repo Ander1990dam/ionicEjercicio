@@ -22,7 +22,6 @@ export class InicioPage implements OnInit {
   }
 
   ngOnInit() {
-    // Si no hay un usuario autenticado, redirigir al login
     if (!this.userId) {
       this.apiService.getCursos().subscribe({
         next: (resp) => {
@@ -32,7 +31,6 @@ export class InicioPage implements OnInit {
       return;
     }
 
-    // Lógica para cargar los cursos o las matrículas según el rol del usuario
     if (this.rol === 'administrador') {
       this.apiService.getCursosConAlumnos().subscribe({
         next: (resp) => {
