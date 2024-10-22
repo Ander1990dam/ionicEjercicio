@@ -92,4 +92,25 @@ export class ApiService {
     return this.httpClient.get(`${this.url}galeria/${idUser}`)
   }
 
+
+
+  crearCurso(nombre: string) {
+    const body = { nombre };
+    return this.httpClient.post(`${this.url}curso`, body);
+  }
+
+  editarCurso(idCurso: number, nombre: string): Observable<any> {
+    const body = { nombre };
+    return this.httpClient.put(`${this.url}curso/${idCurso}`, body);
+  }
+
+  eliminarCurso(idCurso: number) {
+    return this.httpClient.delete(`${this.url}curso/${idCurso}`);
+  }
+  
+  obtenerCursos() {
+    return this.httpClient.get(`${this.url}cursos`);
+  }
+  
+
 }

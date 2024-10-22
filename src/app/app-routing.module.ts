@@ -37,6 +37,10 @@ const routes: Routes = [
     path: 'galeria',
     loadChildren: () => import('./galeria/galeria.module').then( m => m.GaleriaPageModule)
   },
+  {
+    path: 'panel-admin-cursos',
+    loadChildren: () => import('./panel-admin-cursos/panel-admin-cursos.module').then( m => m.PanelAdminCursosPageModule)
+  },
  
 ];
 
