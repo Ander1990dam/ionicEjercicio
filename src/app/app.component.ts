@@ -11,11 +11,7 @@ import { filter } from 'rxjs/operators';
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent implements OnInit, OnDestroy {
-  public appPages = [
-    { title: 'Inicio', url: '/inicio', icon: 'home', enabled: true },
-    { title: 'Alta', url: '/alta', icon: 'person-add', enabled: true },
-  ];
-
+  public appPages: any[] = [];
   fotoPerfilUrl: string = '';
   usuario: string = '';
   private subscriptions: Subscription[] = [];
@@ -27,32 +23,39 @@ export class AppComponent implements OnInit, OnDestroy {
   ) {
     this.apiService.isLogin = !!localStorage.getItem('rol');
     this.usuario = localStorage.getItem('usuario') ?? '';
+
+    const rol = localStorage.getItem('rol');
+    if (rol) {
+      this.sharedService.updateAppPages(rol);
+    } else {
+      this.sharedService.updateAppPages('default');
+    }
   }
 
   ngOnInit(): void {
-    // Suscribirse a los cambios de foto de perfil y nombre de usuario
     this.subscriptions.push(
       this.sharedService.fotoPerfil$.subscribe((foto) => {
         this.fotoPerfilUrl = foto;
       }),
       this.sharedService.usuario$.subscribe((usuario) => {
         this.usuario = usuario;
+      }),
+      this.sharedService.appPages$.subscribe((pages) => {
+        this.appPages = pages;
       })
     );
 
-    // Detectar cambios de ruta y ejecutar getInfoPerfil
     this.subscriptions.push(
       this.router.events.pipe(
-        filter(event => event instanceof NavigationEnd) // Solo eventos de fin de navegación
+        filter(event => event instanceof NavigationEnd)
       ).subscribe(() => {
-        this.getInfoPerfil(); // Llamar a la función para obtener la información del perfil
+        this.getInfoPerfil();
       })
     );
 
-    // Cargar el usuario y foto almacenados si están disponibles
     const savedFoto = localStorage.getItem('fotoPerfil');
     if (savedFoto) {
-      let fotoParsed = this.apiService.getApiUrl + savedFoto;
+      const fotoParsed = this.apiService.getApiUrl() + savedFoto;
       this.sharedService.updateFotoPerfil(fotoParsed);
     }
 
@@ -63,7 +66,6 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    // Cancelar todas las suscripciones
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
@@ -71,24 +73,27 @@ export class AppComponent implements OnInit, OnDestroy {
     this.apiService.isLogin = false;
     localStorage.clear();
     this.sharedService.clearUserData();
+    this.router.navigateByUrl("/login");
   }
 
-  // Método para obtener la información del perfil (nombre y foto)
   getInfoPerfil(): void {
     const userId = localStorage.getItem('userId');
     if (userId) {
       this.apiService.getInfoPerfil(+userId).subscribe((response) => {
-        let fotoBase64 = response.fotoPerfil;
-        const nombreUsuario = response.nombre;
+        const fotoBase64 = (this.apiService.getApiUrl() + response.fotoPerfil).replace('ws/', '');
+        const nombreUsuario = response.usuario;
 
-
-        fotoBase64 = (this.apiService.getApiUrl() + fotoBase64).replace('ws/', '');
         this.sharedService.updateFotoPerfil(fotoBase64);
         this.sharedService.updateUsuario(nombreUsuario);
 
-        // Guardar en localStorage
         localStorage.setItem('fotoPerfil', fotoBase64);
         localStorage.setItem('usuario', nombreUsuario);
+        console.log(nombreUsuario)
+
+        const rol = localStorage.getItem('rol');
+        if (rol) {
+          this.sharedService.updateAppPages(rol);
+        }
       }, (error) => {
         console.error('Error al obtener la información del perfil:', error);
       });

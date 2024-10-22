@@ -67,8 +67,29 @@ export class ApiService {
     return this.httpClient.get<any>(this.url + "usuario/" + userId)
   }
 
-  actualizarFotoPerfil(idUser:number, fotoPerfil: string) {
-    const body = { fotoPerfil };
+  actualizarFotoPerfil(idUser:number, fotoPerfil: string, agregarAGaleria: boolean = true) {
+    const body = { fotoPerfil, agregarAGaleria };
     return this.httpClient.put(`${this.url}usuario/${idUser}/foto`, body);
   }
+  crearUsuario(usuario: string, nombre: string, apellido1: string, apellido2: string, clave: string, rol: string) {
+    const body = { usuario, nombre, apellido1, apellido2, clave, rol };
+    return this.httpClient.post(`${this.url}register`, body);
+  }
+  
+  editarUsuario(idUser: number, usuario: string, nombre: string, apellido1: string, apellido2: string, clave: string, rol: string): Observable<any> {
+    const body = { usuario, nombre, apellido1, apellido2, clave, rol };
+    return this.httpClient.put(`${this.url}usuario/${idUser}`, body);
+  }  
+
+  eliminarUsuario(idUser: number){
+    return this.httpClient.delete(`${this.url}usuario/${idUser}`)
+  }
+  obtenerUsuarios(){
+    return this.httpClient.get(`${this.url}usuario`)
+  }
+
+  obtenerGaleria(idUser: number){
+    return this.httpClient.get(`${this.url}galeria/${idUser}`)
+  }
+
 }
