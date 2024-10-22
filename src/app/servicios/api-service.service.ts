@@ -12,13 +12,16 @@ export class ApiService {
   public usuario = '';
   private url = "https://api2.ruptur.eu/ws/";
 
-  // BehaviorSubject para fotoPerfil, con un valor inicial de cadena vacía
   private fotoPerfilSubject: BehaviorSubject<string> = new BehaviorSubject<string>('');
 
-  // Observable que los componentes pueden suscribirse
   public fotoPerfil$: Observable<string> = this.fotoPerfilSubject.asObservable();
 
   constructor(private httpClient: HttpClient) {}
+
+
+  getApiUrl(){
+    return this.url;
+  }
 
   getCursos(): Observable<Curso[]> {
     return this.httpClient.get<Curso[]>(this.url + "curso");
@@ -56,13 +59,16 @@ export class ApiService {
     return this.httpClient.post<any>(this.url + 'usuario/foto/' + formData.get('userId'), formData);
   }
 
-  getFotoPerfil(userId: string): Observable<any> {
+  getFotoPerfil(userId: number): Observable<any> {
     return this.httpClient.get<any>(this.url + 'usuario/foto/' + userId);
   }
 
-  // Método para actualizar la foto de perfil
-  actualizarFotoPerfil(nuevaFoto: string): void {
-    // Emitir el nuevo valor
-    this.fotoPerfilSubject.next(nuevaFoto);
+  getInfoPerfil(userId: number): Observable<any> {
+    return this.httpClient.get<any>(this.url + "usuario/" + userId)
+  }
+
+  actualizarFotoPerfil(idUser:number, fotoPerfil: string) {
+    const body = { fotoPerfil };
+    return this.httpClient.put(`${this.url}usuario/${idUser}/foto`, body);
   }
 }

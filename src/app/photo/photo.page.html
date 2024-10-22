@@ -4,10 +4,13 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content style="text-align: -webkit-center;">
-  <ion-img *ngIf="photo" [src]="photo" style="max-width: 350px; "></ion-img>
+<ion-content style="text-align: center;">
+  <!-- Mostrar la imagen capturada, si existe -->
+  <ion-img *ngIf="capturedImage" [src]="'data:image/png;base64,' + capturedImage" style="max-width: 350px;"></ion-img>
+  
+  <!-- Botón flotante para abrir la cámara -->
   <ion-fab vertical="bottom" horizontal="center" slot="fixed">
-    <ion-fab-button (click)="addPhotoToGallery()">
+    <ion-fab-button (click)="takePicture()">
       <ion-icon name="camera"></ion-icon>
     </ion-fab-button>
   </ion-fab>
