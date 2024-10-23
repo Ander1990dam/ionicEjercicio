@@ -22,17 +22,19 @@ export class BorrarPage implements OnInit {
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.loadAlumnos();
+  }
 
   onSubmit() {
     if (this.formulario.valid) {
       const { alumno, curso } = this.formulario.value;
 
       this.apiService
-        .postMatricula({ id_alumno: alumno, id_curso: curso })
+        .eliminarMatricula({ id_alumno: alumno, id_curso: curso })
         .subscribe({
           next: (resp) => {
-            console.log('Curso añadido correctamente');
+            console.log('Curso eliminado correctamente');
             this.formulario.reset();
           },
           error: (error) => {
@@ -44,5 +46,29 @@ export class BorrarPage implements OnInit {
     }
   }
 
-  obtenerAginaturasAlumno() {}
+  loadAlumnos() {
+    this.apiService.getAlumnos().subscribe(
+      (data: any) => {
+        this.alumnos = data;
+      },
+      (error) => {
+        console.error('Error al cargar los cursos', error);
+      }
+    );
+  }
+
+  loadCursos() {
+    this.apiService.getCursosSinNota(this.formulario.value.alumno).subscribe(
+      (data: any) => {
+        this.cursos = data.cursosSinNota;
+      },
+      (error) => {
+        console.error('Error al cargar los cursos', error);
+      }
+    );
+  }
+
+  obtenerAginaturasAlumno() {
+    this.loadCursos();
+  }
 }
