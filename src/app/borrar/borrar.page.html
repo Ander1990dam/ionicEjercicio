@@ -1,0 +1,29 @@
+
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Darse de Baja</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+  <form [formGroup]="formulario" (ngSubmit)="onSubmit()">
+    <ion-item>
+      <ion-label>Nombre alumno</ion-label>
+      <ion-select placeholder="Seleccionar alumno" formControlName="alumno" (ionChange)="obtenerAginaturasAlumno()">
+        <ion-select-option *ngFor="let alumno of alumnos" [value]="alumno.id" >
+          {{ alumno.nombre }}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Nombre Curso</ion-label>
+      <ion-select placeholder="Seleccionar curso" formControlName="curso">
+        <ion-select-option *ngFor="let curso of cursos" [value]="curso.id">
+          {{ curso.nombre }}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-button expand="block" type="submit" [disabled]="formulario.invalid">Darse de baja</ion-button>
+  </form>
+</ion-content>
