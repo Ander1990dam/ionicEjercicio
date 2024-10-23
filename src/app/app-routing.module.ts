@@ -41,6 +41,10 @@ const routes: Routes = [
     path: 'panel-admin-cursos',
     loadChildren: () => import('./panel-admin-cursos/panel-admin-cursos.module').then( m => m.PanelAdminCursosPageModule)
   },
+  {
+    path: 'borrar',
+    loadChildren: () => import('./borrar/borrar.module').then( m => m.BorrarPageModule)
+  },
  
 ];
 
