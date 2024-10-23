@@ -28,16 +28,16 @@ export class SharedService {
         { title: 'Inicio', url: '/inicio', icon: 'home', enabled: true },
         { title: 'Alta', url: '/alta', icon: 'person-add', enabled: true },
         { title: 'Foto', url: '/photo', icon: 'camera', enabled: true },
-        { title: 'Galeria', url: '/galeria', icon: 'image', enabled: true },
+        //{ title: 'Galeria', url: '/galeria', icon: 'image', enabled: true },
       ];
     } else if (rol === 'administrador') {
       pages = [
         { title: 'Inicio', url: '/inicio', icon: 'home', enabled: true },
         { title: 'Alta', url: '/alta', icon: 'person-add', enabled: true },
-        { title: 'Admin', url: '/panel-admin', icon: 'create', enabled: true },
+       // { title: 'Admin', url: '/panel-admin', icon: 'create', enabled: true },
         { title: 'Admin Cursos', url: '/panel-admin-cursos', icon: 'create', enabled: true },
         { title: 'Foto', url: '/photo', icon: 'camera', enabled: true },
-        { title: 'Galeria', url: '/galeria', icon: 'image', enabled: true },
+       // { title: 'Galeria', url: '/galeria', icon: 'image', enabled: true },
       ];
     } else {
       pages = [{ title: 'Inicio', url: '/inicio', icon: 'home', enabled: true }];
