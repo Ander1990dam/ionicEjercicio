@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApiService } from '../servicios/api-service.service';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-borrar',
@@ -14,7 +15,8 @@ export class BorrarPage implements OnInit {
 
   constructor(
     private apiService: ApiService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private toastController: ToastController
   ) {
     this.formulario = this.formBuilder.group({
       alumno: ['', Validators.required],
@@ -31,14 +33,17 @@ export class BorrarPage implements OnInit {
       const { alumno, curso } = this.formulario.value;
 
       this.apiService
-        .eliminarMatricula({ id_alumno: alumno, id_curso: curso })
+        .eliminarMatricula({ id_usuario: alumno, id_curso: curso })
         .subscribe({
           next: (resp) => {
             console.log('Curso eliminado correctamente');
             this.formulario.reset();
+            this.showSuccessToast('Matrícula eliminada con éxito');
+            this.loadAlumnos();
           },
           error: (error) => {
             console.error(error);
+            this.showErrorToast('Error al eliminar la matricula');
           },
         });
     } else {
@@ -70,5 +75,27 @@ export class BorrarPage implements OnInit {
 
   obtenerAginaturasAlumno() {
     this.loadCursos();
+  }
+
+  // Toast para éxito
+  async showSuccessToast(message: string) {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 2000,
+      position: 'bottom',
+      color: 'success',
+    });
+    toast.present();
+  }
+
+  // Toast para error
+  async showErrorToast(message: string) {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 2000,
+      position: 'bottom',
+      color: 'danger',
+    });
+    toast.present();
   }
 }

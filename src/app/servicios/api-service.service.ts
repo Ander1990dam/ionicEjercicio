@@ -118,7 +118,10 @@ export class ApiService {
     return this.httpClient.delete(`${this.url}usuario/${idUser}`);
   }
   eliminarMatricula(body: any) {
-    return this.httpClient.delete(`${this.url}usuario`, body);
+    return this.httpClient.delete(
+      `${this.url}matricula/eliminar/${body.id_usuario}/${body.id_curso}`,
+      body
+    );
   }
   obtenerUsuarios() {
     return this.httpClient.get(`${this.url}usuario`);
